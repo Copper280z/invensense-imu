@@ -51,7 +51,7 @@ void InvensenseImu::Begin() {
 }
 
 bool InvensenseImu::WriteRegister(const uint8_t reg, const uint8_t data,
-                                  const int32_t spi_clock) {
+                                  const uint32_t spi_clock) {
   uint8_t ret_val;
   if (iface_ == I2C) {
     i2c_->beginTransmission(dev_);
@@ -59,7 +59,8 @@ bool InvensenseImu::WriteRegister(const uint8_t reg, const uint8_t data,
     i2c_->write(data);
     i2c_->endTransmission();
   } else {
-    spi_->beginTransaction(SPISettings(spi_clock, MSBFIRST, SPI_MODE3));
+    SPISettings spi_settings = SPISettings(spi_clock, MSBFIRST, SPI_MODE3);
+    spi_->beginTransaction(spi_settings);
     #if defined(TEENSYDUINO)
     digitalWriteFast(dev_, LOW);
     #else
@@ -90,7 +91,7 @@ bool InvensenseImu::WriteRegister(const uint8_t reg, const uint8_t data,
 }
 
 bool InvensenseImu::ReadRegisters(const uint8_t reg, const uint8_t count,
-                                  const int32_t spi_clock,
+                                  const uint32_t spi_clock,
                                   uint8_t * const data) {
   if (!data) {return false;}
   if (iface_ == I2C) {
@@ -107,7 +108,8 @@ bool InvensenseImu::ReadRegisters(const uint8_t reg, const uint8_t count,
       return false;
     }
   } else {
-    spi_->beginTransaction(SPISettings(spi_clock, MSBFIRST, SPI_MODE3));
+    spi_settings = SPISettings(spi_clock, MSBFIRST, SPI_MODE3);
+    spi_->beginTransaction(spi_settings);
     #if defined(TEENSYDUINO)
     digitalWriteFast(dev_, LOW);
     #else

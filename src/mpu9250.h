@@ -116,14 +116,14 @@ class Mpu9250 {
 
  private:
   InvensenseImu imu_;
-  int32_t spi_clock_;
+  uint32_t spi_clock_;
   /*
   * MPU-9250 supports an SPI clock of 1 MHz for config and 20 MHz for reading
   * data; however, in testing we found that 20 MHz was sometimes too fast and
   * scaled this down to 15 MHz, which consistently worked well.
   */
-  static constexpr int32_t SPI_CFG_CLOCK_ = 1000000;
-  static constexpr int32_t SPI_READ_CLOCK_ = 15000000;
+  static constexpr uint32_t SPI_CFG_CLOCK_ = 1000000;
+  static constexpr uint32_t SPI_READ_CLOCK_ = 15000000;
   /* Configuration */
   AccelRange accel_range_, requested_accel_range_;
   GyroRange gyro_range_, requested_gyro_range_;
